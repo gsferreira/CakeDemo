@@ -1,4 +1,5 @@
 #tool "OctopusTools"
+#tool "Cake.CoreCLR"
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
@@ -21,12 +22,8 @@ Task("Build")
     .IsDependentOn("Package-Restore")
     .Does(() =>
 {
-    var settings = new DotNetCoreBuildSettings
-    {
-        OutputDirectory = "./bin/"
-    };
     
-     DotNetCoreBuild("./src/CakeDemo.sln", settings);
+    DotNetCoreBuild("./src/CakeDemo.sln");
 
 });
 
@@ -38,18 +35,33 @@ Task("Unit-Tests")
         
 });
 
-Task("Package")
+Task("Publish")
     .IsDependentOn("Unit-Tests")
+    .Does(() =>
+{
+    var settings = new DotNetCorePublishSettings
+    {
+        Framework = "netcoreapp1.1",
+        Configuration = configuration,
+        OutputDirectory = "./artifacts/publish"
+    };
+        
+    DotNetCorePublish("./src/WebApplication/", settings);
+});
+
+Task("Package")
+    .IsDependentOn("Publish")
     .Does(() =>
 {
     var settings = new OctopusPackSettings {
         
-        BasePath = "./bin/",
-        OutFolder = "./artifacts",
+        BasePath = "./artifacts/publish",
+        OutFolder = "./artifacts/octo",
         Overwrite = true
     };
     OctoPack("webapp", settings);
 });
+
 
 Task("Default")
     .IsDependentOn("Package");
