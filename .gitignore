@@ -250,3 +250,14 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+# Cake
+tools/*
+!tools/packages.config
+
+# Artifacts
+artifacts/*
+
+# Excluded for DEMO
+build.ps1
+build.cake

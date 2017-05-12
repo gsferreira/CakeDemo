@@ -1,0 +1,1 @@
+#tool "nuget:?package=OctopusTools"
