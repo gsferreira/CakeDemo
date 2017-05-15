@@ -1,0 +1,84 @@
+{
+	"Cake Demo Clean":
+	{
+		"prefix": "cake-demo-clean",
+		"body": ["Task(\"Clean\")",
+    	".Does(() =>",
+		"{",
+    	"    CleanDirectory(Directory(\"./artifacts\"));",
+		"});"],
+		"description": "Cake Demo - Step 1 - Clean"
+	},
+	"Cake Demo Package Restore":
+	{
+		"prefix": "cake-demo-package-restore",
+		"body": ["Task(\"Package-Restore\")",
+    	".Does(() =>",
+		"{",
+			"    DotNetCoreRestore(\"./src/CakeDemo.sln\");",
+		"});"],
+		"description": "Cake Demo - Step 2 - Package Restore"
+	},
+	"Cake Demo Build":
+	{
+		"prefix": "cake-demo-build",
+		"body": ["Task(\"Build\")",
+    ".IsDependentOn(\"Clean\")",
+    ".IsDependentOn(\"Package-Restore\")",
+    ".Does(() =>",
+	"{",
+    "    var settings = new DotNetCoreBuildSettings",
+    "    {",
+        "        Framework = \"netcoreapp1.1\",",
+        "        Configuration = configuration",
+    "    };",
+	"    DotNetCoreBuild(\"./src/CakeDemo.sln\", settings);",
+	"});"],
+		"description": "Cake Demo - Step 3 - Build"
+	},
+	"Cake Demo Test":
+	{
+		"prefix": "cake-demo-test",
+		"body": ["Task(\"Unit-Tests\")",
+    ".IsDependentOn(\"Build\")",
+    ".Does(() =>",
+	"{",
+    "    DotNetCoreTest(\"./src/WebApplication.Tests/WebApplication.Tests.csproj\");",
+	"});"],
+		"description": "Cake Demo - Step 4 - Test"
+	},
+	"Cake Demo Publish":
+	{
+		"prefix": "cake-demo-publish",
+		"body": ["Task(\"Publish\")",
+    ".IsDependentOn(\"Unit-Tests\")",
+    ".Does(() =>",
+	"{",
+    "    var settings = new DotNetCorePublishSettings",
+    "    {",
+        "        Framework = \"netcoreapp1.1\",",
+        "        Configuration = configuration,",
+        "        OutputDirectory = \"./artifacts/publish\"",
+    "    };",    
+    "    DotNetCorePublish(\"./src/WebApplication/\", settings);",
+	"});"],
+		"description": "Cake Demo - Step 5 - Publish"
+	},
+	"Cake Demo Octopus Package":
+	{
+		"prefix": "cake-demo-octopus-package",
+		"body": ["#tool \"nuget:?package=OctopusTools\"",
+		"Task(\"Package\")",
+    	".IsDependentOn(\"Publish\")",
+    	".Does(() =>",
+		"{",
+    	"    var settings = new OctopusPackSettings {",
+        "        BasePath = \"./artifacts/publish\",",
+        "        OutFolder = \"./artifacts/octo\",",
+        "        Overwrite = true",
+    	"    };",
+    	"    OctoPack(\"webapp\", settings);",
+		"});"],
+		"description": "Cake Demo - Step 5 - Publish"
+	}
+}

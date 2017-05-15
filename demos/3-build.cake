@@ -20,7 +20,14 @@ Task("Build")
     .Does(() =>
 {
     
-     DotNetCoreBuild("./src/CakeDemo.sln");
+    var settings = new DotNetCoreBuildSettings
+    {
+        Framework = "netcoreapp1.1",
+        Configuration = configuration
+    };
+
+
+    DotNetCoreBuild("./src/CakeDemo.sln", settings);
 
 });
 
