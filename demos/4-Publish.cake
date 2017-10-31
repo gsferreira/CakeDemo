@@ -11,15 +11,8 @@ Task("Clean")
     CleanDirectory(Directory("./artifacts"));
 });
 
-Task("Package-Restore")
-    .Does(() =>
-{
-    DotNetCoreRestore("./src/CakeDemo.sln");
-});
-
 Task("Build")
     .IsDependentOn("Clean")
-    .IsDependentOn("Package-Restore")
     .Does(() =>
 {
     
@@ -41,7 +34,6 @@ Task("Publish")
 {
     var settings = new DotNetCorePublishSettings
     {
-        Framework = "netcoreapp1.1",
         Configuration = configuration,
         OutputDirectory = "./artifacts/publish"
     };

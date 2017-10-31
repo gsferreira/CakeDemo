@@ -8,15 +8,8 @@ Task("Clean")
     CleanDirectory(Directory("./artifacts"));
 });
 
-Task("Package-Restore")
-    .Does(() =>
-{
-    DotNetCoreRestore("./src/CakeDemo.sln");
-});
-
 Task("Build")
     .IsDependentOn("Clean")
-    .IsDependentOn("Package-Restore")
     .Does(() =>
 {
     
