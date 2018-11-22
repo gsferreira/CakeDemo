@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using WebApplication.Controllers;
 using Xunit;
 
@@ -13,7 +13,7 @@ namespace WebApplication.Tests
             var controller = new ValuesController();
 
             // Act
-            var result = controller.Get();
+            var result = controller.Get()?.Value;
 
             // Assert
             Assert.NotNull(result);
@@ -27,7 +27,7 @@ namespace WebApplication.Tests
             var controller = new ValuesController();
 
             // Act
-            var result = controller.Get(1);
+            var result = controller.Get(1)?.Value;
 
             // Assert
             Assert.NotNull(result);

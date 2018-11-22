@@ -41,7 +41,6 @@ Task("Publish")
 {
     var settings = new DotNetCorePublishSettings
     {
-        Framework = "netcoreapp1.1",
         Configuration = configuration,
         OutputDirectory = "./artifacts/publish"
     };
