@@ -259,5 +259,5 @@ tools/*
 artifacts/*
 
 # Excluded for DEMO
-build.ps1
-build.cake
+# build.ps1
+# build.cake
